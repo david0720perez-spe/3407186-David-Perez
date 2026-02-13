@@ -1,15 +1,13 @@
-# Ficha de [Plataforma de certificaciones profesionales] - [David Perez]
+# [Plataforma de certificaciones profesionales] - [David Perez]
 
 ## 📋 Información
 
-- **Nombre**: [Joseph Daniel]
-- **Fecha**: [DD/MM/YYYY]
-- **Dominio Asignado**: [Sistema de gestiòn de recursos humanos]
-- **Entidad Principal**: [Qué representa tu ficha]
-
+- **Nombre**: [David Samuel Perez]
+- **Fecha**: [12/02/2026]
+- **Dominio Asignado**: [Sistema de gestiòn de certificaciones]
 ## 🎯 Descripción
 
-[Breve descripción de lo que muestra tu ficha]
+En este aplicativo web se podra observar todo lo relacionado con la informacion acerca de una empresa especializada en certificar persona
 
 ## 📚 Conceptos ES2023 Aplicados
 
@@ -23,15 +21,19 @@
 ## 🚀 Cómo Ejecutar
 
 1. Abrir index.html en el navegador
+   
 
 ## 📸 Screenshots
 
-[Agregar capturas de pantalla]
+<img width="811" height="579" alt="image" src="https://github.com/user-attachments/assets/a519c5c2-3117-4524-ae59-450867194f24" />
+<img width="813" height="579" alt="image" src="https://github.com/user-attachments/assets/44ad941e-59f2-4deb-b468-81ccb2531fad" />
+
 
 ## 🎯 Autoevaluación
 
-- Funcionalidad: [X]%
-- Código ES2023: [X]%
-- Código Limpio: [X]%
-- Adaptación al Dominio: [X]%
-- **Total Estimado**: [X]%
+- Funcionalidad: [5]%
+- Código ES2023: [5]%
+- Código Limpio: [4]%
+- Adaptación al Dominio: [4.3]%
+- **Total Estimado**: [4.6]%
+
