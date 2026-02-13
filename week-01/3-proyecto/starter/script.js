@@ -179,21 +179,20 @@ const renderStats = () => {
 // 5. (Opcional) Guarde la preferencia en localStorage
 // ============================================
 const toggleTheme = () => {
-    const currentTheme = document.documentElement.dataset.theme || 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    document.documentElement.dataset.theme = newTheme;
-    themeToggle.textContent = newTheme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
-    localStorage.setItem('theme', newTheme);
-    themeToggle.addEventListener('click', toggleTheme);
+  const currentTheme = document.documentElement.dataset.theme;
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = newTheme;
+  themeToggle.textContent = newTheme === "dark" ? "☀️" : "🌙";
+  localStorage.setItem("theme", newTheme);
+  const themeToggle = document.getElementById('theme-toggle'); // Asegúrate que el ID coincida con el HTML
 };
 
 const loadTheme = () => {
-    const savedTheme = localStorage.getItem('theme') ?? 'light';
-    document.documentElement.dataset.theme = savedTheme;
-    if (themeToggle) themeToggle.textContent = savedTheme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
+  const savedTheme = localStorage.getItem("theme") ?? "light";
+  document.documentElement.dataset.theme = savedTheme;
+  themeToggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+themeToggle.addEventListener('click', toggleTheme);
 };
-
 // ============================================
 // TODO 8: Funcionalidad de copiar información
 // Crea una arrow function llamada 'copyInfo' que:
