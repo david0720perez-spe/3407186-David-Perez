@@ -21,7 +21,8 @@ En este aplicativo web se podra observar todo lo relacionado con la informacion 
 ## 🚀 Cómo Ejecutar
 
 1. Abrir index.html en el navegador
-   
+2. En el index seleccinar el servicio que necesitas
+3. En el que necesitas dal click y adquiere nuestros servicios   
 
 ## 📸 Screenshots
 
