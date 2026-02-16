@@ -97,6 +97,14 @@ const renderBasicInfo = () => {
         `;
     }
 };
+// Esta línea:
+const { name, description, contact: { email, phone } } = entityData;
+
+// Es lo mismo que:
+const name = entityData.name;
+const description = entityData.description;
+const email = entityData.contact?.email;
+const phone = entityData.contact?.phone;
 
 // ============================================
 // TODO 4: Renderizar lista de elementos
