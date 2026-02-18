@@ -1,71 +1,34 @@
-/**
- * ============================================
- * PROYECTO SEMANA 02 - GESTOR DE COLECCIÓN
- * Archivo inicial para el aprendiz
- * ============================================
- *
- * INSTRUCCIONES:
- * 1. Lee el README.md del proyecto para entender los requisitos
- * 2. Adapta TODOS los TODOs a tu dominio asignado por el instructor
- * 3. Usa SOLO características ES2023 aprendidas esta semana:
- *    - Spread operator (...) para copiar arrays/objetos
- *    - Rest parameters (...args) en funciones
- *    - Default parameters
- *    - Array methods: map, filter, reduce, find
- *    - Object enhancements (shorthand, computed properties)
- * 4. NUNCA mutes el estado directamente - usa inmutabilidad
- * 5. Los comentarios deben estar en español
- * 6. La nomenclatura técnica (variables, funciones) en inglés
- *
- * NOTA IMPORTANTE:
- * Este archivo es una PLANTILLA GENÉRICA.
- * Debes adaptarlo completamente a tu dominio asignado.
- * NO copies la implementación de otro compañero.
- *
- * EJEMPLO DE REFERENCIA (NO es un dominio asignable):
- * Planetario - Gestión de cuerpos celestes
- *
- * ============================================
- */
+// certificationsManager.js
+// Sistema profesional de gestión de certificaciones (con persistencia en LocalStorage)
 
 // ============================================
-// ESTADO GLOBAL
+// CONFIGURACIÓN - CATEGORÍAS Y PRIORIDADES (ajustado al dominio)
 // ============================================
-
-// Array que almacena todos los elementos de tu colección
-let items = [];
-
-// ID del elemento que se está editando (null si es nuevo)
-let editingItemId = null;
-
-// ============================================
-// TODO 1: DEFINIR CATEGORÍAS DE TU DOMINIO
-// ============================================
-// Define las categorías específicas de tu dominio.
-// Cada categoría debe tener un emoji representativo.
-//
-// EJEMPLO (Planetario - NO es un dominio asignable):
-// const CATEGORIES = {
-//   planet: { name: 'Planeta', emoji: '🪐' },
-//   star: { name: 'Estrella', emoji: '⭐' },
-//   asteroid: { name: 'Asteroide', emoji: '☄️' },
-//   comet: { name: 'Cometa', emoji: '💫' },
-//   moon: { name: 'Luna', emoji: '🌙' }
-// };
-
 const CATEGORIES = {
-  // TODO: Define las categorías de tu dominio
-  // category1: { name: 'Nombre en español', emoji: '🔹' },
-  // category2: { name: 'Nombre en español', emoji: '🔸' },
-  // category3: { name: 'Nombre en español', emoji: '🔷' },
+  it_digital:       { name: "Tecnología y Transformación Digital", emoji: "💻" },
+  cybersecurity:    { name: "Ciberseguridad",                  emoji: "🔒" },
+  data_ai:          { name: "Datos e Inteligencia Artificial", emoji: "📊" },
+  project_mgmt:     { name: "Gestión de Proyectos y Ágil",     emoji: "📈" },
+  business:         { name: "Negocios y Liderazgo",            emoji: "👔" },
+  finance_fintech:  { name: "Finanzas y Fintech",              emoji: "💰" },
+  cloud_devops:     { name: "Cloud y DevOps",                  emoji: "☁️" },
+  sustainability:   { name: "Sostenibilidad y ESG",            emoji: "🌱" },
+  design_ux:        { name: "Diseño y UX/UI",                  emoji: "🎨" },
+  languages:        { name: "Idiomas y Comunicación",          emoji: "🗣️" },
+  emerging:         { name: "Emergentes 2025–2026",            emoji: "🚀" }
 };
 
-// Prioridades genéricas (adapta los nombres si es necesario)
 const PRIORITIES = {
-  high: { name: 'Alta', color: '#ef4444' },
-  medium: { name: 'Media', color: '#f59e0b' },
-  low: { name: 'Baja', color: '#22c55e' },
+  must:    { name: "Imprescindible", color: "#e63946" },
+  high:    { name: "Alta",           color: "#f4a261" },
+  medium:  { name: "Media",          color: "#2a9d8f" },
+  low:     { name: "Baja",           color: "#457b9d" },
+  nice:    { name: "Opcional / Nice-to-have", color: "#a8dadc" }
 };
+
+// Estado global
+let items = [];
+let editingItemId = null;
 
 // ============================================
 // TODO 2: PERSISTENCIA (LocalStorage)
@@ -73,33 +36,20 @@ const PRIORITIES = {
 
 /**
  * Carga los elementos desde LocalStorage
- * @returns {Array} Array de elementos guardados, o array vacío
+ * @returns {Array} Array de certificaciones guardadas, o array vacío
  */
 const loadItems = () => {
   // TODO: Implementa la carga desde localStorage
-  // 1. Obtén el valor de localStorage con la key de tu dominio
-  // 2. Si existe, usa JSON.parse() para convertirlo a array
-  // 3. Si no existe, retorna array vacío []
-  // 4. Usa el operador ?? para el valor por defecto
-  //
-  // EJEMPLO:
-  // const stored = localStorage.getItem('celestialBodies');
-  // return stored ? JSON.parse(stored) : [];
-  // O más moderno:
-  // return JSON.parse(localStorage.getItem('celestialBodies') ?? '[]');
+  return JSON.parse(localStorage.getItem('myCertifications') ?? '[]');
 };
 
 /**
  * Guarda los elementos en LocalStorage
- * @param {Array} items - Array de elementos a guardar
+ * @param {Array} items - Array de certificaciones a guardar
  */
 const saveItems = itemsToSave => {
   // TODO: Implementa el guardado en localStorage
-  // 1. Usa JSON.stringify() para convertir el array a string
-  // 2. Guarda con localStorage.setItem()
-  //
-  // EJEMPLO:
-  // localStorage.setItem('celestialBodies', JSON.stringify(itemsToSave));
+  localStorage.setItem('myCertifications', JSON.stringify(itemsToSave));
 };
 
 // ============================================
@@ -107,46 +57,34 @@ const saveItems = itemsToSave => {
 // ============================================
 
 /**
- * Crea un nuevo elemento con los datos proporcionados
- * @param {Object} itemData - Datos del nuevo elemento
- * @returns {Array} Nuevo array de elementos (sin mutar el original)
+ * Crea una nueva certificación con los datos proporcionados
+ * @param {Object} itemData - Datos de la nueva certificación
+ * @returns {Array} Nuevo array de certificaciones (sin mutar el original)
  */
 const createItem = (itemData = {}) => {
-  // TODO: Implementa la creación de un nuevo elemento
-  // 1. Crea un objeto con las propiedades base:
-  //    - id: Date.now()
-  //    - createdAt: new Date().toISOString()
-  //    - updatedAt: null
-  //    - active: true (o el estado inicial de tu dominio)
-  //
-  // 2. Usa spread operator para combinar:
-  //    - Valores por defecto (default parameters)
-  //    - Los datos recibidos en itemData
-  //
-  // 3. Usa spread para crear nuevo array: [...items, newItem]
-  //
-  // 4. Guarda en localStorage
-  //
-  // 5. Retorna el nuevo array
-  //
-  // EJEMPLO (Planetario):
-  // const newItem = {
-  //   id: Date.now(),
-  //   name: itemData.name ?? '',
-  //   description: itemData.description ?? '',
-  //   category: itemData.category ?? 'planet',
-  //   priority: itemData.priority ?? 'medium',
-  //   active: true,
-  //   createdAt: new Date().toISOString(),
-  //   updatedAt: null,
-  //   // Propiedades específicas del dominio:
-  //   magnitude: itemData.magnitude ?? 0,
-  //   distance: itemData.distance ?? '',
-  //   ...itemData
-  // };
-  // const newItems = [...items, newItem];
-  // saveItems(newItems);
-  // return newItems;
+  // TODO: Implementa la creación de una nueva certificación
+  const newItem = {
+    id: Date.now(),
+    active: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: null,
+    
+    // Valores por defecto combinados con itemData
+    title:       itemData.title       ?? '',
+    issuer:      itemData.issuer      ?? '',
+    category:    itemData.category    ?? 'it_digital',
+    priority:    itemData.priority    ?? 'medium',
+    issueDate:   itemData.issueDate   ?? '',
+    expiryDate:  itemData.expiryDate  ?? '',
+    credentialId:itemData.credentialId?? '',
+    url:         itemData.url         ?? '',
+    notes:       itemData.notes       ?? '',
+    ...itemData
+  };
+
+  const newItems = [...items, newItem];
+  saveItems(newItems);
+  return newItems;
 };
 
 // ============================================
@@ -154,27 +92,20 @@ const createItem = (itemData = {}) => {
 // ============================================
 
 /**
- * Actualiza un elemento existente
- * @param {Number} id - ID del elemento a actualizar
+ * Actualiza una certificación existente
+ * @param {Number} id - ID de la certificación a actualizar
  * @param {Object} updates - Propiedades a actualizar
- * @returns {Array} Nuevo array con el elemento actualizado
+ * @returns {Array} Nuevo array con la certificación actualizada
  */
 const updateItem = (id, updates) => {
   // TODO: Implementa la actualización usando map
-  // 1. Usa map para iterar sobre el array
-  // 2. Si item.id === id, combina con spread: { ...item, ...updates, updatedAt: new Date().toISOString() }
-  // 3. Si no coincide, retorna el item sin cambios
-  // 4. Guarda el nuevo array en localStorage
-  // 5. Retorna el nuevo array
-  //
-  // EJEMPLO:
-  // const updatedItems = items.map(item =>
-  //   item.id === id
-  //     ? { ...item, ...updates, updatedAt: new Date().toISOString() }
-  //     : item
-  // );
-  // saveItems(updatedItems);
-  // return updatedItems;
+  const updatedItems = items.map(item =>
+    item.id === id
+      ? { ...item, ...updates, updatedAt: new Date().toISOString() }
+      : item
+  );
+  saveItems(updatedItems);
+  return updatedItems;
 };
 
 // ============================================
@@ -182,20 +113,15 @@ const updateItem = (id, updates) => {
 // ============================================
 
 /**
- * Elimina un elemento por su ID
- * @param {Number} id - ID del elemento a eliminar
- * @returns {Array} Nuevo array sin el elemento eliminado
+ * Elimina una certificación por su ID
+ * @param {Number} id - ID de la certificación a eliminar
+ * @returns {Array} Nuevo array sin la certificación eliminada
  */
 const deleteItem = id => {
   // TODO: Implementa la eliminación usando filter
-  // 1. Usa filter para crear nuevo array excluyendo el elemento
-  // 2. Guarda en localStorage
-  // 3. Retorna el nuevo array
-  //
-  // EJEMPLO:
-  // const filteredItems = items.filter(item => item.id !== id);
-  // saveItems(filteredItems);
-  // return filteredItems;
+  const filtered = items.filter(item => item.id !== id);
+  saveItems(filtered);
+  return filtered;
 };
 
 // ============================================
@@ -203,36 +129,30 @@ const deleteItem = id => {
 // ============================================
 
 /**
- * Alterna el estado activo/inactivo de un elemento
- * @param {Number} id - ID del elemento
+ * Alterna el estado activo/inactivo de una certificación
+ * @param {Number} id - ID de la certificación
  * @returns {Array} Nuevo array con el estado actualizado
  */
 const toggleItemActive = id => {
   // TODO: Implementa el toggle usando map
-  // 1. Usa map para encontrar y actualizar el elemento
-  // 2. Invierte el valor de 'active' con !item.active
-  // 3. Actualiza updatedAt
-  // 4. Guarda y retorna
-  //
-  // EJEMPLO:
-  // const updatedItems = items.map(item =>
-  //   item.id === id
-  //     ? { ...item, active: !item.active, updatedAt: new Date().toISOString() }
-  //     : item
-  // );
-  // saveItems(updatedItems);
-  // return updatedItems;
+  const updated = items.map(item =>
+    item.id === id
+      ? { ...item, active: !item.active, updatedAt: new Date().toISOString() }
+      : item
+  );
+  saveItems(updated);
+  return updated;
 };
 
 /**
- * Elimina todos los elementos inactivos
- * @returns {Array} Nuevo array solo con elementos activos
+ * Elimina todas las certificaciones inactivas
+ * @returns {Array} Nuevo array solo con certificaciones activas
  */
 const clearInactive = () => {
   // TODO: Implementa usando filter
-  // const activeItems = items.filter(item => item.active);
-  // saveItems(activeItems);
-  // return activeItems;
+  const activeOnly = items.filter(item => item.active);
+  saveItems(activeOnly);
+  return activeOnly;
 };
 
 // ============================================
@@ -240,92 +160,81 @@ const clearInactive = () => {
 // ============================================
 
 /**
- * Filtra elementos por estado (activo/inactivo)
- * @param {Array} itemsToFilter - Array de elementos
+ * Filtra certificaciones por estado (activo/inactivo)
+ * @param {Array} itemsToFilter - Array de certificaciones
  * @param {String} status - 'all' | 'active' | 'inactive'
- * @returns {Array} Elementos filtrados
+ * @returns {Array} Certificaciones filtradas
  */
 const filterByStatus = (itemsToFilter, status = 'all') => {
   // TODO: Implementa el filtro por estado
-  // - 'all': retorna todos
-  // - 'active': filtra donde active === true
-  // - 'inactive': filtra donde active === false
-  //
-  // EJEMPLO:
-  // if (status === 'all') return itemsToFilter;
-  // if (status === 'active') return itemsToFilter.filter(item => item.active);
-  // if (status === 'inactive') return itemsToFilter.filter(item => !item.active);
-  // return itemsToFilter;
+  if (status === 'all')      return itemsToFilter;
+  if (status === 'active')   return itemsToFilter.filter(i => i.active);
+  if (status === 'inactive') return itemsToFilter.filter(i => !i.active);
+  return itemsToFilter;
 };
 
 /**
- * Filtra elementos por categoría
- * @param {Array} itemsToFilter - Array de elementos
+ * Filtra certificaciones por categoría
+ * @param {Array} itemsToFilter - Array de certificaciones
  * @param {String} category - Categoría a filtrar o 'all'
- * @returns {Array} Elementos filtrados
+ * @returns {Array} Certificaciones filtradas
  */
 const filterByCategory = (itemsToFilter, category = 'all') => {
   // TODO: Implementa el filtro por categoría
-  // if (category === 'all') return itemsToFilter;
-  // return itemsToFilter.filter(item => item.category === category);
+  if (category === 'all') return itemsToFilter;
+  return itemsToFilter.filter(i => i.category === category);
 };
 
 /**
- * Filtra elementos por prioridad
- * @param {Array} itemsToFilter - Array de elementos
+ * Filtra certificaciones por prioridad
+ * @param {Array} itemsToFilter - Array de certificaciones
  * @param {String} priority - Prioridad a filtrar o 'all'
- * @returns {Array} Elementos filtrados
+ * @returns {Array} Certificaciones filtradas
  */
 const filterByPriority = (itemsToFilter, priority = 'all') => {
   // TODO: Similar a filterByCategory
+  if (priority === 'all') return itemsToFilter;
+  return itemsToFilter.filter(i => i.priority === priority);
 };
 
 /**
- * Busca elementos por texto en nombre y descripción
- * @param {Array} itemsToFilter - Array de elementos
+ * Busca certificaciones por texto en título, emisor, notas o credential ID
+ * @param {Array} itemsToFilter - Array de certificaciones
  * @param {String} query - Texto a buscar
- * @returns {Array} Elementos que coinciden
+ * @returns {Array} Certificaciones que coinciden
  */
 const searchItems = (itemsToFilter, query) => {
   // TODO: Implementa la búsqueda
-  // 1. Si query está vacío, retorna todos
-  // 2. Convierte query a minúsculas
-  // 3. Filtra donde name o description incluyan el query
-  // 4. Usa .toLowerCase() para búsqueda case-insensitive
-  //
-  // EJEMPLO:
-  // if (!query || query.trim() === '') return itemsToFilter;
-  // const searchTerm = query.toLowerCase();
-  // return itemsToFilter.filter(item =>
-  //   item.name.toLowerCase().includes(searchTerm) ||
-  //   (item.description ?? '').toLowerCase().includes(searchTerm)
-  // );
+  if (!query || query.trim() === '') return itemsToFilter;
+  const term = query.toLowerCase();
+  return itemsToFilter.filter(item =>
+    item.title.toLowerCase().includes(term) ||
+    (item.issuer  ?? '').toLowerCase().includes(term) ||
+    (item.notes   ?? '').toLowerCase().includes(term) ||
+    (item.credentialId ?? '').toLowerCase().includes(term)
+  );
 };
 
 /**
  * Aplica todos los filtros de forma encadenada
- * @param {Array} itemsToFilter - Array de elementos
+ * @param {Array} itemsToFilter - Array de certificaciones
  * @param {Object} filters - Objeto con todos los filtros
- * @returns {Array} Elementos filtrados
+ * @returns {Array} Certificaciones filtradas
  */
 const applyFilters = (itemsToFilter, filters = {}) => {
   // TODO: Implementa aplicación de filtros encadenada
-  // Usa destructuring con default values para los filtros
-  //
-  // EJEMPLO:
-  // const {
-  //   status = 'all',
-  //   category = 'all',
-  //   priority = 'all',
-  //   search = ''
-  // } = filters;
-  //
-  // // Encadena los filtros
-  // let result = filterByStatus(itemsToFilter, status);
-  // result = filterByCategory(result, category);
-  // result = filterByPriority(result, priority);
-  // result = searchItems(result, search);
-  // return result;
+  const {
+    status    = 'all',
+    category  = 'all',
+    priority  = 'all',
+    search    = ''
+  } = filters;
+
+  let result = filterByStatus(itemsToFilter, status);
+  result = filterByCategory(result, category);
+  result = filterByPriority(result, priority);
+  result = searchItems(result, search);
+  return result;
 };
 
 // ============================================
@@ -333,37 +242,27 @@ const applyFilters = (itemsToFilter, filters = {}) => {
 // ============================================
 
 /**
- * Calcula estadísticas generales de la colección
- * @param {Array} itemsToAnalyze - Array de elementos
+ * Calcula estadísticas generales de la colección de certificaciones
+ * @param {Array} itemsToAnalyze - Array de certificaciones
  * @returns {Object} Objeto con estadísticas
  */
 const getStats = (itemsToAnalyze = []) => {
   // TODO: Implementa el cálculo de estadísticas usando reduce
-  // Retorna un objeto con:
-  // - total: número total de elementos
-  // - active: elementos activos
-  // - inactive: elementos inactivos
-  // - byCategory: objeto con conteo por categoría
-  // - byPriority: objeto con conteo por prioridad
-  //
-  // EJEMPLO:
-  // const total = itemsToAnalyze.length;
-  // const active = itemsToAnalyze.filter(item => item.active).length;
-  // const inactive = total - active;
-  //
-  // // Usa reduce para agrupar por categoría
-  // const byCategory = itemsToAnalyze.reduce((acc, item) => {
-  //   acc[item.category] = (acc[item.category] ?? 0) + 1;
-  //   return acc;
-  // }, {});
-  //
-  // // Usa reduce para agrupar por prioridad
-  // const byPriority = itemsToAnalyze.reduce((acc, item) => {
-  //   acc[item.priority] = (acc[item.priority] ?? 0) + 1;
-  //   return acc;
-  // }, {});
-  //
-  // return { total, active, inactive, byCategory, byPriority };
+  const total    = itemsToAnalyze.length;
+  const active   = itemsToAnalyze.filter(i => i.active).length;
+  const inactive = total - active;
+
+  const byCategory = itemsToAnalyze.reduce((acc, item) => {
+    acc[item.category] = (acc[item.category] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  const byPriority = itemsToAnalyze.reduce((acc, item) => {
+    acc[item.priority] = (acc[item.priority] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  return { total, active, inactive, byCategory, byPriority };
 };
 
 // ============================================
@@ -376,7 +275,7 @@ const getStats = (itemsToAnalyze = []) => {
  * @returns {String} Emoji de la categoría
  */
 const getCategoryEmoji = category => {
-  return CATEGORIES[category]?.emoji ?? '📌';
+  return CATEGORIES[category]?.emoji ?? '📜';
 };
 
 /**
@@ -385,7 +284,10 @@ const getCategoryEmoji = category => {
  * @returns {String} Fecha formateada
  */
 const formatDate = dateString => {
+  if (!dateString) return '—';
   const date = new Date(dateString);
+  // Validación por si la fecha no es válida
+  if (isNaN(date.getTime())) return dateString; 
   return date.toLocaleDateString('es-ES', {
     day: '2-digit',
     month: 'short',
@@ -394,38 +296,36 @@ const formatDate = dateString => {
 };
 
 /**
- * Renderiza un elemento individual como HTML
- * @param {Object} item - Objeto del elemento
- * @returns {String} HTML del elemento
+ * Renderiza una certificación individual como HTML
+ * @param {Object} item - Objeto de la certificación
+ * @returns {String} HTML de la certificación
  */
 const renderItem = item => {
   // TODO: Implementa el renderizado usando template literals
-  // 1. Usa destructuring para extraer propiedades
-  // 2. Usa template literals para el HTML
-  // 3. Añade clases condicionales para estado y prioridad
-  // 4. Incluye checkbox, información y botones de acción
-  //
-  // EJEMPLO:
-  // const { id, name, description, category, priority, active, createdAt } = item;
-  //
-  // return `
-  //   <div class="item ${active ? '' : 'inactive'} priority-${priority}" data-item-id="${id}">
-  //     <input type="checkbox" class="item-checkbox" ${active ? 'checked' : ''}>
-  //     <div class="item-content">
-  //       <h3 class="item-name">${name}</h3>
-  //       ${description ? `<p class="item-description">${description}</p>` : ''}
-  //       <div class="item-meta">
-  //         <span class="badge badge-category">${getCategoryEmoji(category)} ${CATEGORIES[category]?.name ?? category}</span>
-  //         <span class="badge badge-priority priority-${priority}">${PRIORITIES[priority]?.name ?? priority}</span>
-  //         <span class="item-date">📅 ${formatDate(createdAt)}</span>
-  //       </div>
-  //     </div>
-  //     <div class="item-actions">
-  //       <button class="btn-edit" title="Editar">✏️</button>
-  //       <button class="btn-delete" title="Eliminar">🗑️</button>
-  //     </div>
-  //   </div>
-  // `;
+  const { id, title, issuer, category, priority, active, issueDate, expiryDate, credentialId, url, notes } = item;
+
+  return `
+    <div class="cert-item ${active ? '' : 'inactive'} priority-${priority}" data-item-id="${id}">
+      <input type="checkbox" class="cert-checkbox" ${active ? 'checked' : ''}>
+      <div class="cert-content">
+        <h3 class="cert-title">${title}</h3>
+        <div class="cert-issuer">${issuer || 'Emisor no especificado'}</div>
+        <div class="cert-meta">
+          <span class="badge badge-category">${getCategoryEmoji(category)} ${CATEGORIES[category]?.name ?? category}</span>
+          <span class="badge badge-priority" style="background-color: ${PRIORITIES[priority]?.color}">${PRIORITIES[priority]?.name ?? priority}</span>
+          <span class="cert-date">📅 ${formatDate(issueDate)}</span>
+          ${expiryDate ? `<span class="cert-date">⌛ Expira: ${formatDate(expiryDate)}</span>` : ''}
+        </div>
+        ${credentialId ? `<div class="cert-credential">ID: <code>${credentialId}</code></div>` : ''}
+        ${url ? `<a href="${url}" target="_blank" class="cert-link">🔗 Ver Credencial</a>` : ''}
+        ${notes ? `<p class="cert-notes">📝 ${notes}</p>` : ''}
+      </div>
+      <div class="cert-actions">
+        <button class="btn-edit" title="Editar">✏️</button>
+        <button class="btn-delete" title="Eliminar">🗑️</button>
+      </div>
+    </div>
+  `;
 };
 
 // ============================================
@@ -433,28 +333,23 @@ const renderItem = item => {
 // ============================================
 
 /**
- * Renderiza la lista completa de elementos
- * @param {Array} itemsToRender - Array de elementos a renderizar
+ * Renderiza la lista completa de certificaciones
+ * @param {Array} itemsToRender - Array de certificaciones a renderizar
  */
 const renderItems = itemsToRender => {
-  const itemList = document.getElementById('item-list');
+  const itemList = document.getElementById('cert-list');
   const emptyState = document.getElementById('empty-state');
 
+  if (!itemList) return;
+
   // TODO: Implementa el renderizado de la lista
-  // 1. Si no hay elementos, muestra el empty state
-  // 2. Si hay elementos:
-  //    - Usa map para convertir cada item a HTML con renderItem
-  //    - Une con .join('')
-  //    - Asigna a itemList.innerHTML
-  //
-  // EJEMPLO:
-  // if (itemsToRender.length === 0) {
-  //   itemList.innerHTML = '';
-  //   emptyState.style.display = 'block';
-  // } else {
-  //   emptyState.style.display = 'none';
-  //   itemList.innerHTML = itemsToRender.map(renderItem).join('');
-  // }
+  if (itemsToRender.length === 0) {
+    itemList.innerHTML = '';
+    if (emptyState) emptyState.style.display = 'block';
+  } else {
+    if (emptyState) emptyState.style.display = 'none';
+    itemList.innerHTML = itemsToRender.map(renderItem).join('');
+  }
 };
 
 /**
@@ -463,18 +358,21 @@ const renderItems = itemsToRender => {
  */
 const renderStats = stats => {
   // TODO: Actualiza los elementos del DOM con las estadísticas
-  // Usa template literals para mostrar los números
-  //
-  // EJEMPLO:
-  // document.getElementById('stat-total').textContent = stats.total;
-  // document.getElementById('stat-active').textContent = stats.active;
-  // document.getElementById('stat-inactive').textContent = stats.inactive;
-  //
-  // // Renderiza estadísticas por categoría
-  // const categoryStats = Object.entries(stats.byCategory)
-  //   .map(([cat, count]) => `${getCategoryEmoji(cat)} ${CATEGORIES[cat]?.name ?? cat}: ${count}`)
-  //   .join(' | ');
-  // document.getElementById('stats-details').textContent = categoryStats;
+  const totalEl = document.getElementById('stat-total');
+  const activeEl = document.getElementById('stat-active');
+  const inactiveEl = document.getElementById('stat-inactive');
+  const categoriesEl = document.getElementById('stats-categories');
+
+  if (totalEl) totalEl.textContent = stats.total;
+  if (activeEl) activeEl.textContent = stats.active;
+  if (inactiveEl) inactiveEl.textContent = stats.inactive;
+
+  if (categoriesEl) {
+    const catStats = Object.entries(stats.byCategory)
+      .map(([cat, count]) => `${getCategoryEmoji(cat)} ${count}`)
+      .join('  ');
+    categoriesEl.textContent = catStats || 'Sin datos';
+  }
 };
 
 // ============================================
@@ -482,95 +380,101 @@ const renderStats = stats => {
 // ============================================
 
 /**
- * Maneja el envío del formulario (crear/editar)
+ * Maneja el envío del formulario (crear/editar certificación)
  * @param {Event} e - Evento del formulario
  */
 const handleFormSubmit = e => {
   e.preventDefault();
 
   // TODO: Obtén los valores del formulario
-  // Adapta los campos a tu dominio
-  //
-  // EJEMPLO:
-  // const name = document.getElementById('item-name').value.trim();
-  // const description = document.getElementById('item-description').value.trim();
-  // const category = document.getElementById('item-category').value;
-  // const priority = document.getElementById('item-priority').value;
-  // // Campos específicos del dominio:
-  // const magnitude = document.getElementById('item-magnitude')?.value ?? '';
+  const title        = document.getElementById('cert-title').value.trim();
+  const issuer       = document.getElementById('cert-issuer').value.trim();
+  const category     = document.getElementById('cert-category').value;
+  const priority     = document.getElementById('cert-priority').value;
+  const issueDate    = document.getElementById('cert-issue-date').value;
+  const expiryDate   = document.getElementById('cert-expiry-date').value;
+  const credentialId = document.getElementById('cert-credential-id').value.trim();
+  const url          = document.getElementById('cert-url').value.trim();
+  const notes        = document.getElementById('cert-notes').value.trim();
 
-  // TODO: Valida que el nombre no esté vacío
-  // if (!name) {
-  //   alert('El nombre es obligatorio');
-  //   return;
-  // }
+  // TODO: Valida que el título no esté vacío
+  if (!title) {
+    alert('El título de la certificación es obligatorio');
+    return;
+  }
 
   // TODO: Crea el objeto con los datos
-  // const itemData = { name, description, category, priority };
+  const itemData = {
+    title, issuer, category, priority,
+    issueDate, expiryDate, credentialId, url, notes
+  };
 
   // TODO: Si hay editingItemId, actualiza; si no, crea nuevo
-  // if (editingItemId) {
-  //   items = updateItem(editingItemId, itemData);
-  // } else {
-  //   items = createItem(itemData);
-  // }
+  if (editingItemId) {
+    items = updateItem(editingItemId, itemData);
+  } else {
+    items = createItem(itemData);
+  }
 
   // TODO: Resetea el formulario y re-renderiza
-  // resetForm();
-  // renderItems(applyCurrentFilters());
-  // renderStats(getStats(items));
+  resetForm();
+  renderItems(applyCurrentFilters());
+  renderStats(getStats(items));
 };
 
 /**
- * Maneja el click en checkbox de un elemento
- * @param {Number} itemId - ID del elemento
+ * Maneja el click en checkbox de una certificación
+ * @param {Number} itemId - ID de la certificación
  */
 const handleItemToggle = itemId => {
   // TODO: Implementa el toggle
-  // items = toggleItemActive(itemId);
-  // renderItems(applyCurrentFilters());
-  // renderStats(getStats(items));
+  items = toggleItemActive(itemId);
+  renderItems(applyCurrentFilters());
+  renderStats(getStats(items));
 };
 
 /**
  * Maneja el click en botón editar
- * @param {Number} itemId - ID del elemento a editar
+ * @param {Number} itemId - ID de la certificación a editar
  */
 const handleItemEdit = itemId => {
   // TODO: Implementa la edición
-  // 1. Encuentra el elemento con find()
-  // 2. Rellena el formulario con sus datos
-  // 3. Cambia el título del formulario
-  // 4. Cambia el botón submit
-  // 5. Muestra el botón cancelar
-  // 6. Guarda editingItemId
-  //
-  // EJEMPLO:
-  // const itemToEdit = items.find(item => item.id === itemId);
-  // if (!itemToEdit) return;
-  //
-  // document.getElementById('item-name').value = itemToEdit.name;
-  // document.getElementById('item-description').value = itemToEdit.description ?? '';
-  // document.getElementById('item-category').value = itemToEdit.category;
-  // document.getElementById('item-priority').value = itemToEdit.priority;
-  //
-  // document.getElementById('form-title').textContent = '✏️ Editar Elemento';
-  // document.getElementById('submit-btn').textContent = 'Actualizar';
-  // document.getElementById('cancel-btn').style.display = 'inline-block';
-  //
-  // editingItemId = itemId;
+  const cert = items.find(item => item.id === itemId);
+  if (!cert) return;
+
+  document.getElementById('cert-title').value        = cert.title;
+  document.getElementById('cert-issuer').value       = cert.issuer || '';
+  document.getElementById('cert-category').value     = cert.category;
+  document.getElementById('cert-priority').value     = cert.priority;
+  document.getElementById('cert-issue-date').value   = cert.issueDate || '';
+  document.getElementById('cert-expiry-date').value  = cert.expiryDate || '';
+  document.getElementById('cert-credential-id').value= cert.credentialId || '';
+  document.getElementById('cert-url').value          = cert.url || '';
+  document.getElementById('cert-notes').value        = cert.notes || '';
+
+  const formTitle = document.getElementById('form-title');
+  const submitBtn = document.getElementById('submit-btn');
+  const cancelBtn = document.getElementById('cancel-btn');
+
+  if (formTitle) formTitle.textContent = '✏️ Editar Certificación';
+  if (submitBtn) submitBtn.textContent = 'Actualizar Cambios';
+  if (cancelBtn) cancelBtn.style.display = 'inline-block';
+
+  editingItemId = itemId;
+  // Scroll suave al formulario
+  document.getElementById('cert-form').scrollIntoView({ behavior: 'smooth' });
 };
 
 /**
  * Maneja el click en botón eliminar
- * @param {Number} itemId - ID del elemento a eliminar
+ * @param {Number} itemId - ID de la certificación a eliminar
  */
 const handleItemDelete = itemId => {
   // TODO: Implementa la eliminación con confirmación
-  // if (!confirm('¿Estás seguro de que deseas eliminar este elemento?')) return;
-  // items = deleteItem(itemId);
-  // renderItems(applyCurrentFilters());
-  // renderStats(getStats(items));
+  if (!confirm('¿Seguro que quieres eliminar esta certificación? Esta acción no se puede deshacer.')) return;
+  items = deleteItem(itemId);
+  renderItems(applyCurrentFilters());
+  renderStats(getStats(items));
 };
 
 /**
@@ -579,17 +483,17 @@ const handleItemDelete = itemId => {
  */
 const getCurrentFilters = () => {
   // TODO: Retorna un objeto con los valores actuales de los filtros
-  // return {
-  //   status: document.getElementById('filter-status').value,
-  //   category: document.getElementById('filter-category').value,
-  //   priority: document.getElementById('filter-priority').value,
-  //   search: document.getElementById('search-input').value
-  // };
+  return {
+    status:   document.getElementById('filter-status')?.value ?? 'all',
+    category: document.getElementById('filter-category')?.value ?? 'all',
+    priority: document.getElementById('filter-priority')?.value ?? 'all',
+    search:   document.getElementById('search-input')?.value ?? ''
+  };
 };
 
 /**
- * Aplica los filtros actuales y retorna los elementos filtrados
- * @returns {Array} Elementos filtrados
+ * Aplica los filtros actuales y retorna las certificaciones filtradas
+ * @returns {Array} Certificaciones filtradas
  */
 const applyCurrentFilters = () => {
   const filters = getCurrentFilters();
@@ -601,8 +505,8 @@ const applyCurrentFilters = () => {
  */
 const handleFilterChange = () => {
   // TODO: Aplica filtros y re-renderiza
-  // const filteredItems = applyCurrentFilters();
-  // renderItems(filteredItems);
+  const filtered = applyCurrentFilters();
+  renderItems(filtered);
 };
 
 /**
@@ -610,11 +514,18 @@ const handleFilterChange = () => {
  */
 const resetForm = () => {
   // TODO: Limpia el formulario
-  // document.getElementById('item-form').reset();
-  // document.getElementById('form-title').textContent = '➕ Nuevo Elemento';
-  // document.getElementById('submit-btn').textContent = 'Crear';
-  // document.getElementById('cancel-btn').style.display = 'none';
-  // editingItemId = null;
+  const form = document.getElementById('cert-form');
+  if (form) form.reset();
+  
+  const formTitle = document.getElementById('form-title');
+  const submitBtn = document.getElementById('submit-btn');
+  const cancelBtn = document.getElementById('cancel-btn');
+
+  if (formTitle) formTitle.textContent = '➕ Nueva Certificación';
+  if (submitBtn) submitBtn.textContent = 'Añadir Certificación';
+  if (cancelBtn) cancelBtn.style.display = 'none';
+  
+  editingItemId = null;
 };
 
 // ============================================
@@ -625,42 +536,51 @@ const resetForm = () => {
  * Adjunta todos los event listeners necesarios
  */
 const attachEventListeners = () => {
-  // TODO: Form submit
-  // document.getElementById('item-form').addEventListener('submit', handleFormSubmit);
+  const form = document.getElementById('cert-form');
+  const cancelBtn = document.getElementById('cancel-btn');
+  const clearBtn = document.getElementById('clear-inactive');
+  const list = document.getElementById('cert-list');
 
+  // TODO: Form submit
+  if (form) form.addEventListener('submit', handleFormSubmit);
+  
   // TODO: Cancel button
-  // document.getElementById('cancel-btn').addEventListener('click', resetForm);
+  if (cancelBtn) cancelBtn.addEventListener('click', resetForm);
 
   // TODO: Filtros - cada cambio dispara handleFilterChange
-  // document.getElementById('filter-status').addEventListener('change', handleFilterChange);
-  // document.getElementById('filter-category').addEventListener('change', handleFilterChange);
-  // document.getElementById('filter-priority').addEventListener('change', handleFilterChange);
-  // document.getElementById('search-input').addEventListener('input', handleFilterChange);
+  ['filter-status', 'filter-category', 'filter-priority'].forEach(id => {
+    document.getElementById(id)?.addEventListener('change', handleFilterChange);
+  });
+  document.getElementById('search-input')?.addEventListener('input', handleFilterChange);
 
   // TODO: Botón limpiar inactivos
-  // document.getElementById('clear-inactive').addEventListener('click', () => {
-  //   if (confirm('¿Eliminar todos los elementos inactivos?')) {
-  //     items = clearInactive();
-  //     renderItems(applyCurrentFilters());
-  //     renderStats(getStats(items));
-  //   }
-  // });
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (confirm('¿Eliminar todas las certificaciones marcadas como inactivas?')) {
+        items = clearInactive();
+        renderItems(applyCurrentFilters());
+        renderStats(getStats(items));
+      }
+    });
+  }
 
   // TODO: Event delegation para la lista de elementos
-  // document.getElementById('item-list').addEventListener('click', e => {
-  //   const itemElement = e.target.closest('.item');
-  //   if (!itemElement) return;
-  //
-  //   const itemId = parseInt(itemElement.dataset.itemId);
-  //
-  //   if (e.target.classList.contains('item-checkbox')) {
-  //     handleItemToggle(itemId);
-  //   } else if (e.target.classList.contains('btn-edit')) {
-  //     handleItemEdit(itemId);
-  //   } else if (e.target.classList.contains('btn-delete')) {
-  //     handleItemDelete(itemId);
-  //   }
-  // });
+  if (list) {
+    list.addEventListener('click', e => {
+      const certElement = e.target.closest('.cert-item');
+      if (!certElement) return;
+
+      const itemId = parseInt(certElement.dataset.itemId);
+
+      if (e.target.classList.contains('cert-checkbox')) {
+        handleItemToggle(itemId);
+      } else if (e.target.closest('.btn-edit')) { // closest por si el click es en el emoji
+        handleItemEdit(itemId);
+      } else if (e.target.closest('.btn-delete')) {
+        handleItemDelete(itemId);
+      }
+    });
+  }
 };
 
 // ============================================
@@ -672,50 +592,12 @@ const attachEventListeners = () => {
  */
 const init = () => {
   // TODO: Implementa la inicialización
-  // 1. Carga los elementos desde localStorage
-  // 2. Renderiza la lista
-  // 3. Renderiza las estadísticas
-  // 4. Adjunta los event listeners
-  // 5. Muestra mensaje de éxito en consola
-  //
-  // EJEMPLO:
-  // items = loadItems();
-  // renderItems(items);
-  // renderStats(getStats(items));
-  // attachEventListeners();
-  // console.log('✅ Aplicación inicializada correctamente');
+  items = loadItems();
+  renderItems(applyCurrentFilters());
+  renderStats(getStats(items));
+  attachEventListeners();
+  console.log('✅ Gestor de Certificaciones Profesionales 2026 inicializado');
 };
 
 // Ejecutar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', init);
-
-// ============================================
-// CHECKLIST DE VERIFICACIÓN
-// ============================================
-// Después de completar todos los TODOs, verifica:
-//
-// FUNCIONALIDAD:
-// ✓ Puedo crear nuevos elementos
-// ✓ Puedo editar elementos existentes
-// ✓ Puedo eliminar elementos
-// ✓ Puedo marcar como activo/inactivo
-// ✓ Los filtros funcionan correctamente
-// ✓ La búsqueda funciona en tiempo real
-// ✓ Las estadísticas se actualizan
-// ✓ Los datos persisten al recargar (localStorage)
-//
-// CÓDIGO:
-// ✓ Uso spread operator para copiar arrays/objetos
-// ✓ Uso array methods (map, filter, reduce, find)
-// ✓ NUNCA muto el estado directamente
-// ✓ Default parameters donde corresponde
-// ✓ Destructuring para extraer propiedades
-// ✓ Template literals para todo el HTML
-// ✓ Comentarios en español
-// ✓ Nomenclatura técnica en inglés
-//
-// DOMINIO:
-// ✓ Adaptado completamente a mi dominio asignado
-// ✓ Categorías específicas de mi dominio
-// ✓ Propiedades adicionales relevantes
-// ✓ Emojis y textos coherentes con el dominio
