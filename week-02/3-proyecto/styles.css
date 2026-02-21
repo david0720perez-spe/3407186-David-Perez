@@ -208,44 +208,103 @@ body {
    Filters
    =================================== */
 
-.filters-section {
-  background: var(--color-white);
-  padding: 1.5rem;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  margin-bottom: 2rem;
-}
+/* ===================================
+   Cert Item (Antes Task Item) - CORREGIDO
+   =================================== */
 
-.filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.filter-group {
+.cert-item {
+  background: var(--color-light);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+  align-items: flex-start;
+  transition: all 0.2s;
+  margin-bottom: 1rem; /* Añadido para separación */
 }
 
-.filter-group label {
-  font-weight: 500;
-  font-size: 0.9rem;
+.cert-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.cert-item.inactive {
+  opacity: 0.6;
+  filter: grayscale(0.5);
+}
+
+.cert-item.priority-must { border-left-color: #e63946; }
+.cert-item.priority-high { border-left-color: #f4a261; }
+.cert-item.priority-medium { border-left-color: #2a9d8f; }
+.cert-item.priority-low { border-left-color: #457b9d; }
+
+.cert-checkbox {
+  width: 20px;
+  height: 20px;
+  margin-top: 0.25rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cert-content {
+  flex: 1;
+}
+
+.cert-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
   color: var(--color-dark);
 }
 
-.filter-group select,
-.filter-group input {
-  padding: 0.5rem;
-  border: 2px solid var(--color-light);
-  border-radius: var(--radius-md);
-  font-family: inherit;
+.cert-issuer {
+    font-weight: 600;
+    color: var(--color-gray);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
 }
 
-.search-group input {
-  width: 100%;
+.cert-meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
 }
 
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.badge-category {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.cert-date {
+  font-size: 0.8rem;
+  color: var(--color-gray);
+  display: flex;
+  align-items: center;
+}
+
+.cert-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cert-link {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
 /* ===================================
    Tasks Section
    =================================== */
