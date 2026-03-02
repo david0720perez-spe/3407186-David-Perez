@@ -1,13 +1,20 @@
 // ============================================
 // SISTEMA DE CERTIFICACIONES PROFESIONAL
-//DAVID SAMUEL PEREZ
-//3407186
-//ERICK GRANADOS
+// DAVID SAMUEL PEREZ
+// 3407186
+// ERICK GRANADOS
 // ============================================
-//============================================
-//CLASE CERTIFICATION
-//============================================
+
+
+
+// ============================================
+// CLASE CERTIFICATION
+// Representa una certificación individual
+// ============================================
+
 class Certification {
+
+  // Propiedades privadas (no se pueden modificar desde afuera)
   #id;
   #title;
   #institution;
@@ -15,23 +22,37 @@ class Certification {
   #expiresAt;
   #active;
 
+  // Constructor: se ejecuta cuando creamos una nueva certificación
   constructor(title, institution, expiresAt) {
+
+    // Genera un ID único automáticamente
     this.#id = crypto.randomUUID();
+
+    // Guarda los datos recibidos
     this.#title = title;
     this.#institution = institution;
+
+    // Fecha actual automática
     this.#issuedAt = new Date().toISOString();
+
+    // Fecha de vencimiento enviada por el usuario
     this.#expiresAt = expiresAt;
+
+    // Por defecto inicia activa
     this.#active = true;
   }
 
+  // Permite leer el ID desde afuera
   get id() {
     return this.#id;
   }
 
+  // Permite saber si está activa
   get active() {
     return this.#active;
   }
 
+  // Devuelve toda la información en formato objeto
   getInfo() {
     return {
       id: this.#id,
@@ -43,36 +64,52 @@ class Certification {
     };
   }
 
+  // Cambia estado a inactiva
   deactivate() {
     this.#active = false;
   }
 
+  // Cambia estado a activa
   activate() {
     this.#active = true;
   }
 
+  // Verifica si ya expiró
   checkExpiration() {
     if (new Date(this.#expiresAt) < new Date()) {
       this.#active = false;
     }
   }
 }
-//============================================
-//CLASE CANDIDATE
-//============================================
+
+
+
+// ============================================
+// CLASE CANDIDATE
+// Representa una persona registrada en el sistema
+// ============================================
+
 class Candidate {
+
   #id;
   #name;
   #email;
   #registeredAt;
 
   constructor(name, email) {
+
+    // ID único automático
     this.#id = crypto.randomUUID();
+
+    // Datos básicos
     this.#name = name;
     this.#email = email;
+
+    // Fecha de registro automática
     this.#registeredAt = new Date().toISOString();
   }
 
+  // Getters para poder leer datos
   get id() {
     return this.#id;
   }
@@ -85,38 +122,55 @@ class Candidate {
     return this.#email;
   }
 }
-//============================================
-//CLASE PRINCIPAL
-//============================================
+
+
+
+// ============================================
+// CLASE PRINCIPAL
+// Maneja todo el sistema
+// ============================================
+
 class CertificationSystem {
+
+  // Arrays privados
   #certifications = [];
   #candidates = [];
 
+  // Agregar certificación
   addCertification(cert) {
     this.#certifications.push(cert);
   }
 
+  // Eliminar certificación por ID
   removeCertification(id) {
-    this.#certifications = this.#certifications.filter(c => c.id !== id);
+    this.#certifications =
+      this.#certifications.filter(c => c.id !== id);
   }
 
+  // Buscar certificación por ID
   findCertification(id) {
     return this.#certifications.find(c => c.id === id);
   }
 
+  // Obtener todas (copia del array)
   getAllCertifications() {
     return [...this.#certifications];
   }
 
+  // Agregar candidato
   addCandidate(candidate) {
     this.#candidates.push(candidate);
   }
 
+  // Obtener todos los candidatos
   getAllCandidates() {
     return [...this.#candidates];
   }
 
+  // Obtener estadísticas generales
   getStats() {
+
+    // Primero verifica expiraciones
     this.#certifications.forEach(c => c.checkExpiration());
 
     const total = this.#certifications.length;
@@ -131,20 +185,33 @@ class CertificationSystem {
     };
   }
 }
+
+
+
+// Crear instancia global del sistema
 const system = new CertificationSystem();
-//============================================
-//Renders
-//============================================
+
+
+
+// ============================================
+// RENDER CERTIFICACIONES
+// Muestra las certificaciones en pantalla
+// ============================================
+
 function renderCertifications() {
+
   const certifications = system.getAllCertifications();
 
+  // Si no hay nada
   if (certifications.length === 0) {
     itemList.innerHTML = "<p>No hay certificaciones registradas</p>";
     return;
   }
 
+  // Crear HTML dinámico
   itemList.innerHTML = certifications
     .map(cert => {
+
       const info = cert.getInfo();
 
       return `
@@ -172,7 +239,15 @@ function renderCertifications() {
     })
     .join("");
 }
+
+
+
+// ============================================
+// RENDER ESTADÍSTICAS
+// ============================================
+
 function renderStats() {
+
   const stats = system.getStats();
 
   statTotal.textContent = stats.total;
@@ -180,14 +255,12 @@ function renderStats() {
   statInactive.textContent = stats.expired;
   statUsers.textContent = stats.candidates;
 }
-const title = document.getElementById("item-name").value;
-const institution = document.getElementById("item-location").value;
-const expiresAt = document.getElementById("item-expiration").value;
 
-const cert = new Certification(title, institution, expiresAt);
-system.addCertification(cert);
+
+
 // ============================================
-// REFERENCIAS DOM
+// REFERENCIAS DEL DOM
+// Guardamos los elementos HTML en variables
 // ============================================
 
 const itemList = document.getElementById("item-list");
@@ -209,43 +282,29 @@ const statTotal = document.getElementById("stat-total");
 const statActive = document.getElementById("stat-active");
 const statInactive = document.getElementById("stat-inactive");
 const statUsers = document.getElementById("stat-users");
+
+
+
 // ============================================
-// SISTEMA DE TABS
-// ============================================
-
-const tabs = document.querySelectorAll(".tab-btn");
-const sections = document.querySelectorAll(".tab-section");
-
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    const target = tab.dataset.tab;
-
-    // quitar activo a todos
-    tabs.forEach(t => t.classList.remove("active"));
-    sections.forEach(s => s.classList.remove("active"));
-
-    // activar el seleccionado
-    tab.classList.add("active");
-    document.getElementById(target).classList.add("active");
-  });
-});
-// ============================================
-// ACCIONES CERTIFICACIONES
+// ACCIONES EN LISTA (Delegación de eventos)
 // ============================================
 
 itemList.addEventListener("click", (e) => {
+
   const id = e.target.dataset.id;
   if (!id) return;
 
   const certification = system.findCertification(id);
   if (!certification) return;
 
+  // Botón activar / desactivar
   if (e.target.classList.contains("btn-toggle")) {
     certification.active
       ? certification.deactivate()
       : certification.activate();
   }
 
+  // Botón eliminar
   if (e.target.classList.contains("btn-delete")) {
     if (confirm("¿Eliminar esta certificación?")) {
       system.removeCertification(id);
@@ -255,22 +314,23 @@ itemList.addEventListener("click", (e) => {
   renderCertifications();
   renderStats();
 });
+
+
+
 // ============================================
-// MODAL CERTIFICACIONES
+// FORMULARIO CERTIFICACIONES
 // ============================================
 
 itemForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+
+  e.preventDefault(); // Evita recargar página
 
   const title = document.getElementById("item-name").value;
   const institution = document.getElementById("item-location").value;
   const expiresAt = document.getElementById("item-expiration").value;
 
-  const certification = new Certification(
-    title,
-    institution,
-    expiresAt
-  );
+  const certification =
+    new Certification(title, institution, expiresAt);
 
   system.addCertification(certification);
 
@@ -280,52 +340,15 @@ itemForm.addEventListener("submit", (e) => {
   renderCertifications();
   renderStats();
 });
-addItemBtn.addEventListener("click", () => {
-  itemModal.style.display = "flex";
-});
 
-closeModal.addEventListener("click", () => {
-  itemModal.style.display = "none";
-});
 
-cancelBtn.addEventListener("click", () => {
-  itemModal.style.display = "none";
-});
 
-itemForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const certification = new Certification(
-    title,
-    institution,
-    expiresAt
-  );
-
-  system.addCertification(certification);
-
-  itemForm.reset();
-  itemModal.style.display = "none";
-
-  renderCertifications();
-  renderStats();
-});
 // ============================================
-// MODAL CANDIDATOS
+// FORMULARIO CANDIDATOS
 // ============================================
-
-addUserBtn.addEventListener("click", () => {
-  userModal.style.display = "flex";
-});
-
-closeUserModal.addEventListener("click", () => {
-  userModal.style.display = "none";
-});
-
-cancelUserBtn.addEventListener("click", () => {
-  userModal.style.display = "none";
-});
 
 userForm.addEventListener("submit", (e) => {
+
   e.preventDefault();
 
   const name = document.getElementById("user-name").value;
@@ -337,15 +360,18 @@ userForm.addEventListener("submit", (e) => {
   userForm.reset();
   userModal.style.display = "none";
 
-  renderUsers();
   renderStats();
 });
+
+
+
 // ============================================
-// INIT
+// INICIALIZACIÓN
 // ============================================
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  // Cuando carga la página, mostramos todo
   renderCertifications();
-  renderUsers();
   renderStats();
 });
