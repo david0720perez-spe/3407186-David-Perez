@@ -51,7 +51,7 @@ console.log("--- Conversiones ---");
 // Convertimos el precio (number) a un string para simular un formato de factura
 const priceFormatted = String(examPrice);
 console.log("Precio convertido a texto: $", priceFormatted);
-console.log("Nuevo tipo de dato:        ", typeof priceFormatted);
+console.log("Nuevo tipo de dato:       ", typeof priceFormatted);
 
 console.log("");
 
