@@ -15,7 +15,7 @@
 // ============================================
 
 console.log("==============================================="); // Línea decorativa
-console.log("[Certificaciones Profesionales] - FICHA #77210"); // Título e ID
+console.log("[Certificaciones Profesionales] - FICHA #3407186"); // Título e ID
 console.log("==============================================="); // Línea decorativa
 console.log(""); // Salto de línea para claridad
 
@@ -40,8 +40,8 @@ console.log("DETALLES"); // Título de sección
 console.log("--------------------"); // Separador
 
 // Datos numéricos literales
-console.log("Puntaje mínimo:     750"); // Tipo Number (Entero)
-console.log("Duración (min):     140"); // Tipo Number (Entero)
+console.log("Puntaje mínimo:     3.5"); // Tipo Number (Entero)
+console.log("Duración (min):     120"); // Tipo Number (Entero)
 console.log("Intentos permitidos: 2");   // Tipo Number (Entero)
 
 // Cálculos aritméticos automáticos
