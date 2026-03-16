@@ -1,50 +1,31 @@
 // ============================================
 // PROYECTO SEMANA 04: Generador de Mensajes
 // ============================================
-//
-// 🎯 OBJETIVO: Construir un generador de mensajes
-//    en consola usando métodos de string y
-//    template literals.
-//
-// 📋 TU DOMINIO: Adapta cada TODO al dominio
-//    que te fue asignado por el instructor.
-//
-// ⚠️  POLÍTICA ANTICOPIA: Tu implementación debe
-//    ser única y coherente con tu dominio.
-//    Usa dominios no asignables como referencia
-//    conceptual, pero NO copies valores.
-//
-// ============================================
 
 // ============================================
 // SECCIÓN 1: Datos del dominio
 // ============================================
 
 // TODO: Define el nombre de tu dominio
-const DOMAIN_NAME = "Mi Dominio";
+const DOMAIN_NAME = "Certificaciones Profesionales";
 
 // TODO: Define el nombre de la entidad principal
-// Inclúyelo con espacios y mayúsculas/minúsculas
-// para poder aplicar transformaciones después
-const rawEntityName = "  nombre de la entidad  ";
+const rawEntityName = "  Certificado en Gestión de Proyectos  ";
 
 // TODO: Define una categoría o tipo (string)
-const entityCategory = "Categoría del elemento";
+const entityCategory = "Certificación Internacional";
 
 // TODO: Define un código identificador (string)
-// Elige un prefijo coherente con tu dominio
-const entityCode = "COD-001";
+const entityCode = "CERT-2026-001";
 
 // TODO: Define una descripción corta (string)
-// Debe contener varias palabras para usar includes/slice
-const entityDescription = "Descripción interesante de la entidad del dominio asignado.";
+const entityDescription = "Certificación avalada internacionalmente para profesionales en gestión de proyectos ágiles.";
 
 // TODO: Define un dato numérico relevante (number)
-const mainValue = 0;
+const mainValue = 40; // Horas de formación
 
 // TODO: Define un estado booleano
 const isActive = true;
-
 
 // ============================================
 // SECCIÓN 2: Transformaciones de string
@@ -60,26 +41,20 @@ const entityNameUpper = entityName.toUpperCase();
 const entityNameLower = entityName.toLowerCase();
 
 // TODO: Extrae las primeras letras del código con slice()
-// para usarlas como prefijo de referencia
-const codePrefix = entityCode.slice(0, 3);
-
+const codePrefix = entityCode.slice(0, 4);
 
 // ============================================
 // SECCIÓN 3: Validaciones con búsqueda
 // ============================================
 
 // TODO: Verifica si el código empieza con el prefijo correcto
-// Usa startsWith() con el prefijo que definiste
 const hasValidPrefix = entityCode.startsWith(codePrefix);
 
 // TODO: Verifica si la descripción contiene una palabra clave
-// Usa includes() con una palabra importante de tu dominio
-const descriptionIsRelevant = entityDescription.includes("dominio");
+const descriptionIsRelevant = entityDescription.includes("internacional");
 
 // TODO: Verifica si el código termina con los dígitos
-// Usa endsWith() con algo coherente de tu dominio
 const hasValidSuffix = entityCode.endsWith("001");
-
 
 // ============================================
 // SECCIÓN 4: Generación de la ficha principal
@@ -89,17 +64,16 @@ const separator = "=".repeat(45);
 const subSeparator = "-".repeat(45);
 
 // TODO: Construye la ficha multilínea usando template literals
-// Usa TODAS las variables transformadas arriba
 const mainCard = `
 ${separator}
-  ${DOMAIN_NAME.toUpperCase()} — FICHA DE ENTIDAD
+  ${DOMAIN_NAME.toUpperCase()} — FICHA DE CERTIFICACIÓN
 ${separator}
 Nombre:      ${entityNameUpper}
 Categoría:   ${entityCategory}
 Código:      ${entityCode}
 Prefijo:     ${codePrefix}
-Valor:       ${mainValue}
-Estado:      ${isActive ? "Activo" : "Inactivo"}
+Duración:    ${mainValue} horas
+Estado:      ${isActive ? "Vigente" : "No vigente"}
 
 ${subSeparator}
 Descripción:
@@ -109,7 +83,6 @@ ${separator}
 
 console.log(mainCard);
 
-
 // ============================================
 // SECCIÓN 5: Validaciones
 // ============================================
@@ -117,10 +90,9 @@ console.log(mainCard);
 console.log("--- Validaciones ---");
 // TODO: Muestra los resultados de las validaciones con template literals
 console.log(`¿Código empieza con '${codePrefix}'?: ${hasValidPrefix}`);
-console.log(`¿Descripción contiene 'dominio'?: ${descriptionIsRelevant}`);
+console.log(`¿Descripción contiene 'internacional'?: ${descriptionIsRelevant}`);
 console.log(`¿Código termina con '001'?: ${hasValidSuffix}`);
 console.log("");
-
 
 // ============================================
 // SECCIÓN 6: Mensaje de notificación corto
@@ -129,7 +101,7 @@ console.log("");
 console.log("--- Notificación ---");
 
 // TODO: Construye un mensaje corto de una línea
-// Usa template literal con el nombre limpio y el código
-const notification = `📢 Nuevo elemento disponible: ${entityName} (${entityCode})`;
+const notification = `📢 Nueva certificación disponible: ${entityName} (${entityCode})`;
 console.log(notification);
 console.log("");
+
