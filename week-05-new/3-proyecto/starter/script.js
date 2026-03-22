@@ -1,104 +1,95 @@
 // ============================================
-// PROYECTO SEMANA 05: Clasificador
-// Condicionales — if/else, ternario, switch, ??, ?.
-// ============================================
-//
-// NOTA PARA EL APRENDIZ:
-// Adapta este script a tu dominio asignado.
-// Reemplaza los comentarios TODO con tu propia implementación.
-// Usa los conceptos aprendidos esta semana.
-//
-// Ejecuta con: node starter/script.js
+// PROYECTO SEMANA 05: Clasificador de Certificaciones
 // ============================================
 
 // ============================================
-// SECCIÓN 1: Datos del elemento de tu dominio
+// SECCIÓN 1: Datos del Examen
 // ============================================
 
-// TODO: Define al menos 5 variables con datos de un elemento de tu dominio.
-// Ejemplos orientativos:
-// - Un libro, medicamento, miembro, estudiante, producto, etc.
-// - Incluye: nombre, estado, valor numérico, tipo (string), y alguna propiedad opcional
-
-const elementName = null;           // TODO: nombre del elemento (string)
-const elementStatus = null;         // TODO: estado actual (string: "active", "inactive", etc.)
-const elementValue = null;          // TODO: valor numérico para clasificar (ocupación, stock, puntaje…)
-const elementType = null;           // TODO: tipo o categoría (string)
-const elementInfo = null;           // TODO: objeto con información adicional opcional (puede ser null)
+const elementName = "Cloud Architect Professional"; 
+const elementStatus = "active"; // "active", "retired", "beta"
+const elementValue = 850;       // Puntaje obtenido (Escala 0-1000)
+const elementType = "CLOUD";    // "CLOUD", "DEV", "DATA", "SECURITY"
+const elementInfo = {
+    provider: "Google Cloud",
+    validityYears: 3,
+    requirements: "Associate Cloud Engineer"
+};
 
 // ============================================
 // SECCIÓN 2: Clasificación con if / else if / else
 // ============================================
 
-// TODO: Clasifica el elemento en al menos 3 niveles según elementValue.
-// Ejemplo de estructura:
-// let classification;
-// if (elementValue >= ...) {
-//   classification = "...";
-// } else if (elementValue >= ...) {
-//   classification = "...";
-// } else {
-//   classification = "...";
-// }
+let classification;
 
-let classification = "Sin clasificar"; // TODO: implementar if/else if/else
+if (elementValue >= 900) {
+    classification = "Sobresaliente (Honors)";
+} else if (elementValue >= 700) {
+    classification = "Aprobado (Pass)";
+} else if (elementValue >= 500) {
+    classification = "Reprobado (Fail) - Requiere refuerzo";
+} else {
+    classification = "No apto - Reintentar curso base";
+}
 
 // ============================================
 // SECCIÓN 3: Estado binario con operador ternario
 // ============================================
 
-// TODO: Usa el ternario para determinar un estado de dos opciones.
-// Ejemplo: const statusLabel = elementStatus === "active" ? "Activo" : "Inactivo";
-
-const statusLabel = ""; // TODO: implementar con ternario
+// Determinamos si el examen está disponible para compra o no
+const statusLabel = elementStatus === "active" ? "Disponible para Registro" : "No Disponible / Retirado";
 
 // ============================================
 // SECCIÓN 4: Tipo con switch
 // ============================================
 
-// TODO: Usa switch sobre elementType para asignar una etiqueta.
-// Ejemplo:
-// switch (elementType) {
-//   case "typeA": typeLabel = "..."; break;
-//   case "typeB": typeLabel = "..."; break;
-//   default: typeLabel = "Tipo desconocido";
-// }
+let typeLabel;
 
-let typeLabel = "Sin tipo"; // TODO: implementar con switch
+switch (elementType) {
+    case "CLOUD":
+        typeLabel = "Infraestructura y Servicios en la Nube";
+        break;
+    case "DEV":
+        typeLabel = "Desarrollo de Software y DevOps";
+        break;
+    case "DATA":
+        typeLabel = "Análisis de Datos e IA";
+        break;
+    case "SECURITY":
+        typeLabel = "Ciberseguridad y Cumplimiento";
+        break;
+    default:
+        typeLabel = "Categoría General de TI";
+}
 
 // ============================================
 // SECCIÓN 5: Valor por defecto con ??
 // ============================================
 
-// TODO: Usa ?? para obtener un valor de fallback cuando sea null o undefined.
-// Ejemplo: const displayName = elementName ?? "Sin nombre";
-
-const displayName = "";      // TODO: elementName ?? "Sin nombre"
-const infoDetail = "";       // TODO: elementInfo?.detail ?? "Sin información adicional"
+const displayName = elementName ?? "Certificación sin título";
+const infoDetail = elementInfo?.provider ?? "Proveedor independiente";
 
 // ============================================
 // SECCIÓN 6: Acceso seguro con ?.
 // ============================================
 
-// TODO: Accede de forma segura a una propiedad de elementInfo.
-// Ejemplo: const location = elementInfo?.location ?? "Ubicación no especificada";
-
-const safeProperty = ""; // TODO: elementInfo?.tuPropiedad ?? "valor por defecto"
+// Accedemos a los años de validez si el objeto elementInfo existe
+const safeProperty = elementInfo?.validityYears ?? "Vigencia no definida";
 
 // ============================================
-// SECCIÓN 7: Ficha de salida
+// SECCIÓN 7: Ficha de salida (Template Literals)
 // ============================================
 
-// TODO: Muestra la ficha en consola con template literals (sin concatenación +)
-// Incluye todos los resultados de las secciones anteriores
-
-console.log("=".repeat(40));
-console.log("FICHA DE CLASIFICACIÓN");
-console.log("=".repeat(40));
-// TODO: console.log(`Nombre: ${displayName}`);
-// TODO: console.log(`Estado: ${statusLabel}`);
-// TODO: console.log(`Clasificación: ${classification}`);
-// TODO: console.log(`Tipo: ${typeLabel}`);
-// TODO: console.log(`Detalle: ${infoDetail}`);
-// TODO: console.log(`Propiedad adicional: ${safeProperty}`);
-console.log("=".repeat(40));
+console.log("=".repeat(45));
+console.log("💎 SISTEMA DE GESTIÓN DE CERTIFICACIONES 💎");
+console.log("=".repeat(45));
+console.log(`Examen:         ${displayName}`);
+console.log(`Proveedor:      ${infoDetail}`);
+console.log(`Categoría:      ${typeLabel}`);
+console.log(`Estado:         ${statusLabel}`);
+console.log(`Puntaje:        ${elementValue} pts`);
+console.log(`Resultado:      ${classification.toUpperCase()}`);
+console.log(`Vigencia:       ${safeProperty} años`);
+console.log("=".repeat(45));
+console.log("Generado por: Platform Admin v1.0");
+console.log("=".repeat(45));
